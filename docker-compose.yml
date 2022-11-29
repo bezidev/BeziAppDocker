@@ -20,7 +20,7 @@ services:
       - "443:443"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   frontend:
-    image: ghcr.io/mytja/beziapp/frontend
+    image: ghcr.io/bezidev/beziapp/frontend
     depends_on:
       - backend
     networks:
@@ -28,7 +28,7 @@ services:
         aliases:
           - frontend
   backend:
-    image: ghcr.io/mytja/beziapp/backend
+    image: ghcr.io/bezidev/beziapp/backend
     volumes:
       - ./refresh_token.txt:/app/refresh_token.txt
       - ./substitutions:/app/substitutions
