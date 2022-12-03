@@ -1,5 +1,17 @@
 version: '3.8'
 services:
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      beziapp:
+        aliases:
+          - postgres
+    volumes: 
+      - ./database:/var/lib/postgresql/data
   nginx-proxy:
     depends_on:
       - frontend
@@ -28,13 +40,18 @@ services:
         aliases:
           - frontend
   backend:
+    depends_on:
+      - postgres
     image: ghcr.io/bezidev/beziapp/backend
     volumes:
       - ./refresh_token.txt:/app/refresh_token.txt
       - ./substitutions:/app/substitutions
+      - ./uploads:/app/uploads
     environment:
       - MS_OAUTH_ID=${MS_OAUTH_ID}
       - MS_OAUTH_SECRET=${MS_OAUTH_SECRET}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: always
     networks:
       beziapp:
