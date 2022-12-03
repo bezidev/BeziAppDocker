@@ -52,6 +52,7 @@ services:
       - MS_OAUTH_SECRET=${MS_OAUTH_SECRET}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES=${POSTGRES}
     restart: always
     networks:
       beziapp:
